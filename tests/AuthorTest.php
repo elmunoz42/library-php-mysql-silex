@@ -120,5 +120,50 @@
             //Assert
             $this->assertEquals([], $result);
         }
+
+        function test_find()
+        {
+            //Arrange
+            $name = 'George R. R. Martin';
+            $george = new Author($name);
+            $george->save();
+
+            $name2 = 'Stephen King';
+            $stephen = new Author($name2);
+            $stephen->save();
+
+            $name3 = 'Patrick Rufus';
+            $patrick = new Author($name3);
+            $patrick->save();
+
+            //Act
+            $result = Author::find($stephen->getId());
+
+            //Assert
+            $this->assertEquals($stephen, $result);
+        }
+
+        function test_delete()
+        {
+            //Arrange
+            $name = 'George R. R. Martin';
+            $george = new Author($name);
+            $george->save();
+
+            $name2 = 'Stephen King';
+            $stephen = new Author($name2);
+            $stephen->save();
+
+            $name3 = 'Patrick Rufus';
+            $patrick = new Author($name3);
+            $patrick->save();
+
+            //Act
+            $stephen->delete();
+            $result = Author::getAll();
+
+            //Assert
+            $this->assertEquals([$george, $patrick], $result);
+        }
     }
 ?>

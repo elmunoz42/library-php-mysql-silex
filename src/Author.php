@@ -31,6 +31,11 @@
             $this->id = $GLOBALS['DB']->lastInsertId();
         }
 
+        function delete()
+        {
+            $GLOBALS['DB']->exec("DELETE FROM authors WHERE id = {$this->getId()};");
+        }
+
         static function getAll()
         {
             $returned_authors = $GLOBALS['DB']->query("SELECT * FROM authors;");
@@ -51,6 +56,22 @@
             $GLOBALS['DB']->exec("DELETE FROM authors;");
         }
 
+        static function find($author_id)
+        {
+            $authors = Author::getAll();
+            $found_author = null;
+
+            foreach($authors as $author)
+            {
+                $id = $author->getId();
+                if ($id == $author_id)
+                {
+                    $found_author = $author;
+                }
+            }
+
+            return $found_author;
+        }
     }
 
 ?>
