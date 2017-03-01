@@ -144,7 +144,7 @@
             //Assert
             $this->assertEquals($new_book2, $result);
         }
-        
+
         function test_delete()
         {
             //Arrange
@@ -166,6 +166,54 @@
 
             //Assert
             $this->assertEquals([$new_book, $new_book3], $result);
+        }
+
+        function test_addAuthor()
+        {
+            //Arrange
+            $title = 'Let it Snow';
+            $new_book = new Book($title);
+            $new_book->save();
+
+            $name = 'John Green';
+            $john = new Author($name);
+            $john->save();
+
+            //Act
+            $new_book->addAuthor($john);
+            $result = $new_book->findAuthors();
+
+            //Assert
+            $this->assertEquals([$john], $result);
+        }
+
+        function test_findAuthors()
+        {
+            //Arrange
+            $title = 'Let it Snow';
+            $new_book = new Book($title);
+            $new_book->save();
+
+            $name = 'John Green';
+            $john = new Author($name);
+            $john->save();
+
+            $name2 = 'Maureen Johnson';
+            $maureen = new Author($name2);
+            $maureen->save();
+
+            $name3 = 'Lauren Myracle';
+            $lauren = new Author($name3);
+            $lauren->save();
+
+            //Act
+            $new_book->addAuthor($john);
+            $new_book->addAuthor($maureen);
+            $new_book->addAuthor($lauren);
+            $result = $new_book->findAuthors();
+
+            //Assert
+            $this->assertEquals([$john, $maureen, $lauren], $result);
         }
     }
 ?>
