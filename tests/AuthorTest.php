@@ -1,4 +1,15 @@
 <?php
+    /**
+    * @backupGlobals disabled
+    * @backupStaticAttributes disabled
+    */
+
+    $server = 'msql:host=localhost:8889;dbname=library_test';
+    $username = 'root';
+    $password = 'root';
+    $DB = new PDO($server, $username, $password);
+
+
     require_once 'src/Author.php';
 
     class AuthorTest extends PHPUnit_Framework_TestCase
