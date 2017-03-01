@@ -10,6 +10,7 @@
     $DB = new PDO($server, $username, $password);
 
     require_once 'src/Book.php';
+    require_once 'src/Author.php';
 
 
     class BookTest extends PHPUnit_Framework_TestCase
@@ -17,6 +18,7 @@
         protected function tearDown()
         {
             Book::deleteAll();
+            Author::deleteAll();
         }
 
         function test_getId()
@@ -142,6 +144,7 @@
             //Assert
             $this->assertEquals($new_book2, $result);
         }
+        
         function test_delete()
         {
             //Arrange

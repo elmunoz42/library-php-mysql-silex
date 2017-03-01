@@ -11,12 +11,14 @@
 
 
     require_once 'src/Author.php';
+    require_once 'src/Book.php';
 
     class AuthorTest extends PHPUnit_Framework_TestCase
     {
         protected function tearDown()
         {
             Author::deleteAll();
+            Book::deleteAll();
         }
 
         function test_getId()
@@ -164,6 +166,54 @@
 
             //Assert
             $this->assertEquals([$george, $patrick], $result);
+        }
+
+        function test_addBook()
+        {
+            //Arrange
+            $name = 'George R. R. Martin';
+            $george = new Author($name);
+            $george->save();
+
+            $title = 'A Game of Thrones';
+            $new_book = new Book($title);
+            $new_book->save();
+
+            //Act
+            $george->addBook($new_book);
+            $result = $george->findBooks();
+
+            //Assert
+            $this->assertEquals([$new_book], $result);
+        }
+
+        function test_findBooks()
+        {
+            //Arrange
+            $name = 'George R. R. Martin';
+            $george = new Author($name);
+            $george->save();
+
+            $title = 'A Game of Thrones';
+            $new_book = new Book($title);
+            $new_book->save();
+
+            $title2 = 'A Feast of Crows';
+            $new_book2 = new Book($title2);
+            $new_book2->save();
+
+            $title3 = 'Dance with Dragons';
+            $new_book3 = new Book($title3);
+            $new_book3->save();
+
+            //Act
+            $george->addBook($new_book);
+            $george->addBook($new_book2);
+            $george->addBook($new_book3);
+            $result = $george->findBooks();
+
+            //Assert
+            $this->assertEquals([$new_book, $new_book2, $new_book3], $result);
         }
     }
 ?>
