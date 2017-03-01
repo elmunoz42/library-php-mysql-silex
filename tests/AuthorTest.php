@@ -4,7 +4,7 @@
     * @backupStaticAttributes disabled
     */
 
-    $server = 'msql:host=localhost:8889;dbname=library_test';
+    $server = 'mysql:host=localhost:8889;dbname=library_test';
     $username = 'root';
     $password = 'root';
     $DB = new PDO($server, $username, $password);
@@ -14,6 +14,11 @@
 
     class AuthorTest extends PHPUnit_Framework_TestCase
     {
+        protected function tearDown()
+        {
+            Author::deleteAll();
+        }
+
         function test_getId()
         {
             //Arrange
@@ -55,6 +60,65 @@
 
             //Assert
             $this->assertEquals('George Martin', $result);
+        }
+
+        function test_save()
+        {
+            //Arrange
+            $name = 'George R. R. Martin';
+            $george = new Author($name);
+            $george->save();
+
+            //Act
+            $result = Author::getAll();
+
+            //Assert
+            $this->assertEquals([$george], $result);
+        }
+
+        function test_getAll()
+        {
+            //Arrange
+            $name = 'George R. R. Martin';
+            $george = new Author($name);
+            $george->save();
+
+            $name2 = 'Stephen King';
+            $stephen = new Author($name2);
+            $stephen->save();
+
+            $name3 = 'Patrick Rufus';
+            $patrick = new Author($name3);
+            $patrick->save();
+
+            //Act
+            $result = Author::getAll();
+
+            //Assert
+            $this->assertEquals([$george, $stephen, $patrick], $result);
+        }
+
+        function test_deleteAll()
+        {
+            //Arrange
+            $name = 'George R. R. Martin';
+            $george = new Author($name);
+            $george->save();
+
+            $name2 = 'Stephen King';
+            $stephen = new Author($name2);
+            $stephen->save();
+
+            $name3 = 'Patrick Rufus';
+            $patrick = new Author($name3);
+            $patrick->save();
+
+            //Act
+            Author::deleteAll();
+            $result = Author::getAll();
+
+            //Assert
+            $this->assertEquals([], $result);
         }
     }
 ?>
