@@ -120,5 +120,49 @@
             //Assert
             $this->assertEquals([], $result);
         }
+
+        function test_find()
+        {
+            //Arrange
+            $title = 'A Game of Thrones';
+            $new_book = new Book($title);
+            $new_book->save();
+
+            $title2 = 'A Feast of Crows';
+            $new_book2 = new Book($title2);
+            $new_book2->save();
+
+            $title3 = 'The Name of the Wind';
+            $new_book3 = new Book($title3);
+            $new_book3->save();
+
+            //Act
+            $result = Book::find($new_book2->getId());
+
+            //Assert
+            $this->assertEquals($new_book2, $result);
+        }
+        function test_delete()
+        {
+            //Arrange
+            $title = 'A Game of Thrones';
+            $new_book = new Book($title);
+            $new_book->save();
+
+            $title2 = 'A Feast of Crows';
+            $new_book2 = new Book($title2);
+            $new_book2->save();
+
+            $title3 = 'The Name of the Wind';
+            $new_book3 = new Book($title3);
+            $new_book3->save();
+
+            //Act
+            $new_book2->delete();
+            $result = Book::getAll();
+
+            //Assert
+            $this->assertEquals([$new_book, $new_book3], $result);
+        }
     }
 ?>
