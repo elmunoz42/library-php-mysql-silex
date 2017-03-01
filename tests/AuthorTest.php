@@ -215,5 +215,23 @@
             //Assert
             $this->assertEquals([$new_book, $new_book2, $new_book3], $result);
         }
+
+        function test_update()
+        {
+            //Arrange
+            $name = "George R. R. Martin";
+            $new_name = 'George Martin';
+            $george = new Author($name);
+            $george->save();
+
+            //Act
+            $george->update($new_name);
+            $updated_author = Author::find($george->getId());
+            $result = $updated_author->getName();
+
+            //Assert
+            $this->assertEquals('George Martin', $result);
+
+        }
     }
 ?>

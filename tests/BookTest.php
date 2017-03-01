@@ -215,5 +215,22 @@
             //Assert
             $this->assertEquals([$john, $maureen, $lauren], $result);
         }
+
+        function test_update()
+        {
+            //Arrange
+            $title = 'A Game of Thrones';
+            $new_title = "AGoT";
+            $new_book = new Book($title);
+            $new_book->save();
+
+            //Act
+            $new_book->update($new_title);
+            $updated_book = Book::find($new_book->getId());
+            $result = $updated_book->getTitle();
+
+            //Assert
+            $this->assertEquals('AGoT', $result);
+        }
     }
 ?>
