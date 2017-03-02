@@ -152,28 +152,24 @@
             $this->assertEquals([$new_copies2], $result);
         }
 
-        // function test_update()
-        // {
-        //     //Arrange
-        //     $shelf = 8;
-        //     $new_shelf = 4;
-        //
-        //     $checked_out = 0;
-        //     $new_checked_out = 4;
-        //
-        //     $book_id = 3;
-        //     $new_book_id = 3;
-        //
-        //     $new_copies = new Copies($shelf, $checked_out, $book_id);
-        //     $new_copies->save();
-        //
-        //     //Act
-        //     $new_copies->update($new_shelf, $new_checked_out, $new_book_id);
-        //     $updated_copies = Copies::find($new_copies->getId());
-        //     $result = $updated_copies->getAvailable();
-        //
-        //     //Assert
-        //     $this->assertEquals(4, $result);
-        // }
+        function test_update()
+        {
+            //Arrange
+            $book_id = 3;
+            $new_copies = new Copies($book_id);
+            $new_copies->save();
+
+            $book_id2 = 4;
+            $new_copies2 = new Copies($book_id2);
+            $new_copies2->save();
+
+            //Act
+            $new_copies->update(0);
+            $updated_copies = Copies::find($new_copies->getId());
+            $result = $updated_copies->getAvailable();
+
+            //Assert
+            $this->assertEquals(0, $result);
+        }
     }
 ?>

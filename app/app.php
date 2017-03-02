@@ -28,6 +28,9 @@
 
     $app->register(new Silex\Provider\TwigServiceProvider(), array('twig.path' => __DIR__.'/../views'));
 
+    use Symfony\Component\HttpFoundation\Request;
+    Request::enableHttpMethodParameterOverride();
+
     $app->get('/', function() use($app) {
 
         return $app['twig']->render('index.html.twig');
@@ -65,13 +68,14 @@
         return $app['twig']->render('book.html.twig', array('book' => $book, 'copies_available' => $copies_available));
     });
 
-    $app->post('/book/{id}', function($id) use ($app) {
+    $app->patch('/book/{id}', function($id) use ($app) {
 
         $book = Book::find($id);
         $copies_available = $book->findAvailableCopies();
         $patron = new Patron("Steve");
         $patron->save();
         $patron->checkoutCopy($copies_available[0]);
+        $copies_available[0]->update(0);
 
         return $app['twig']->render('checkout_success.html.twig');
 
