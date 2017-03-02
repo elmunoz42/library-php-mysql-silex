@@ -11,6 +11,12 @@
     * @backupStaticAttributes disabled
     */
 
+    session_start();
+    if (empty($_SESSION['user']))
+    {
+            $_SESSION['user'] = null;
+    }
+
     $server = 'mysql:host=localhost:8889;dbname=library';
     $username = 'root';
     $password = 'root';
@@ -28,8 +34,12 @@
     });
 
     $app->get('/main', function() use($app) {
+        if ($_GET)
+        {
+            $_SESSION['user'] = $_GET['user'];
+        }
 
-        return $app['twig']->render('main.html.twig', array('books' => Book::getAll()));
+        return $app['twig']->render('main.html.twig', array('books' => Book::getAll(), 'user' => $_SESSION['user']));
     });
 
     $app->post('/add-book', function() use($app) {
