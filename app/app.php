@@ -28,9 +28,19 @@
     });
 
     $app->get('/main', function() use($app) {
-        $books = Book::getAll();
 
-        return $app['twig']->render('main.html.twig');
+        return $app['twig']->render('main.html.twig', array('books' => Book::getAll()));
+    });
+
+    $app->post('/add-book', function() use($app) {
+        $new_book = new Book($_POST['title']);
+        $new_book->save();
+        $copies = new Copies($_POST['copies'], 0, $new_book->getId());
+        $new_author = new Author($_POST['author']);
+        $new_author->save();
+        $new_book->addAuthor($new_author);
+
+        return $app->redirect('/main');
     });
 
     return $app;

@@ -2,15 +2,28 @@
 
 {% block content %}
     <h3>Librarian Main Page</h3>
+    <h4>Add a book to the library</h4>
     <form action='/add-book' method='post'>
-        <label for='title'>Add a book to the library: </label>
+        <label for='title'>Title: </label>
         <input type='text' name='title' required>
 
         <label for='author'>Author: </label>
         <input type='text' name='author' required>
 
+        <label for='copies'>Copies: </label>
+        <input type='number' name='copies' min='0' max='100' required>
+
         <button type='submit'>Add book</button>
 
     </form>
+
+    {% if books is not empty %}
+    <p>Books in the library</p>
+    <ul>
+        {% for book in books %}
+            <li>"{{ book.getTitle }}" By: {% for author in book.findAuthors %}{{ author.getName }} {% endfor %}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 
 {% endblock %}
