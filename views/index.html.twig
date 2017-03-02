@@ -1,1 +1,13 @@
 {% extends 'base.html.twig' %}
+
+{% block content %}
+    <h3>Welcome to the library!</h3>
+    <p>Are you a patron or a librarian?</p>
+    <form action='/main'>
+        <select name='user'>
+            <option value='patron'>Patron</option>
+            <option value='librarian'>Librarian</option>
+        </select>
+        <button type='submit'>Login</button>
+    </form>
+{% endblock %}
