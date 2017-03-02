@@ -48,6 +48,21 @@
             $GLOBALS['DB']->exec("INSERT INTO authors_books (book_id, author_id) VALUES ({$this->getId()}, {$new_author->getId()});");
         }
 
+        function findCopies()
+        {
+            $copies = Copies::getAll();
+            $found_copy = [];
+
+            foreach($copies as $copy)
+            {
+                if ($this->getId() == $copy->getBookId())
+                {
+                    array_push($found_copy, $copy);
+                }
+            }
+            return $found_copy;
+        }
+
         function findAuthors()
         {
             $found_authors = $GLOBALS['DB']->query("SELECT authors.* FROM books JOIN authors_books ON (authors_books.book_id = books.id) JOIN authors ON (authors_books.author_id = authors.id) WHERE books.id = {$this->getId()};");

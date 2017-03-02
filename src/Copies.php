@@ -1,15 +1,13 @@
 <?php
     class Copies
     {
-        private $shelf;
-        private $checked_out;
+        private $available;
         private $book_id;
         private $id;
 
-        function __construct($shelf, $checked_out, $book_id, $id = null)
+        function __construct($book_id, $id = null)
         {
-            $this->shelf = $shelf;
-            $this->checked_out = $checked_out;
+            $this->available = true;
             $this->book_id = $book_id;
             $this->id = $id;
         }
@@ -19,24 +17,14 @@
             return $this->id;
         }
 
-        function getShelf()
+        function getAvailable()
         {
-            return $this->shelf;
+            return $this->available;
         }
 
-        function setShelf($new_shelf)
+        function setAvailable($new_available)
         {
-            $this->shelf = $new_shelf;
-        }
-
-        function getCheckedOut()
-        {
-            return $this->checked_out;
-        }
-
-        function setCheckedOut($new_checked_out)
-        {
-            $this->checked_out = $new_checked_out;
+            $this->available = $new_available;
         }
 
         function getBookId()
@@ -51,16 +39,14 @@
 
         function save()
         {
-            $GLOBALS['DB']->exec("INSERT INTO copies (shelf, checked_out, book_id) VALUES ({$this->getShelf()}, {$this->getCheckedOut()}, {$this->getBookId()});");
+            $GLOBALS['DB']->exec("INSERT INTO copies (book_id, available) VALUES ({$this->getBookId()}, {$this->getAvailable()});");
             $this->id = $GLOBALS['DB']->lastInsertId();
         }
 
-        function update($new_shelf, $new_checked_out, $new_book_id)
+        function update($new_available)
         {
-            $GLOBALS['DB']->exec("UPDATE copies SET shelf = {$new_shelf}, checked_out = {$new_checked_out}, book_id = {$new_book_id} WHERE id = {$this->getId()};");
-            $this->setShelf($new_shelf);
-            $this->setCheckedOut($new_checked_out);
-            $this->setBookId($new_book_id);
+            $GLOBALS['DB']->exec("UPDATE copies SET available = {$new_available} WHERE id = {$this->getId()};");
+            $this->setAvailable($new_available);
         }
 
         function delete()
@@ -75,11 +61,11 @@
 
             foreach($returned_copies as $copy)
             {
-                $shelf = $copy['shelf'];
-                $checked_out = $copy['checked_out'];
+                $available = $copy['available'];
                 $book_id = $copy['book_id'];
                 $id = $copy['id'];
-                $new_copy = new Copies($shelf, $checked_out, $book_id, $id);
+                $new_copy = new Copies($book_id, $id);
+                $new_copy->setAvailable($available);
                 array_push($copies, $new_copy);
             }
             return $copies;

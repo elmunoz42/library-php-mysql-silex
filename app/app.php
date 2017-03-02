@@ -35,7 +35,11 @@
     $app->post('/add-book', function() use($app) {
         $new_book = new Book($_POST['title']);
         $new_book->save();
-        $copies = new Copies($_POST['copies'], 0, $new_book->getId());
+        for ($index = 0; $index < $_POST['copies']; $index++)
+        {
+            $copies = new Copies($new_book->getId());
+            $copies->save();
+        }
         $new_author = new Author($_POST['author']);
         $new_author->save();
         $new_book->addAuthor($new_author);

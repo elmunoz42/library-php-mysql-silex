@@ -21,7 +21,7 @@
     <p>Books in the library</p>
     <ul>
         {% for book in books %}
-            <li>"{{ book.getTitle }}" By: {% for author in book.findAuthors %}{{ author.getName }} {% endfor %}</li>
+            <li>"{{ book.getTitle }}" By: {% for author in book.findAuthors %}{{ author.getName }} {% endfor %} Total Copies:  {{ book.findCopies|length }}</li>
         {% endfor %}
     </ul>
     {% endif %}
