@@ -9,5 +9,10 @@
             {{ author.getName }}
         {% endfor %}</h4>
     <h4>Available copies: {{ copies_available|length }}</h4>
-
+    {% if copies_available is not empty %}
+        <form action="/book/{{ book.getId }}" method="post">
+            <!-- <input type="hidden" name="name" value="{{ book.getId }}"> -->
+            <button type="submit" name="checkout_book">checkout</button>
+        </form>
+    {% endif %}
 {% endblock %}

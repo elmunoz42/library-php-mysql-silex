@@ -65,5 +65,18 @@
         return $app['twig']->render('book.html.twig', array('book' => $book, 'copies_available' => $copies_available));
     });
 
+    $app->post('/book/{id}', function($id) use ($app) {
+
+        $book = Book::find($id);
+        $copies_available = $book->findAvailableCopies();
+        $patron = new Patron("Steve");
+        $patron->save();
+        $patron->checkoutCopy($copies_available[0]);
+
+        return $app['twig']->render('checkout_success.html.twig');
+
+    });
+
+
     return $app;
 ?>

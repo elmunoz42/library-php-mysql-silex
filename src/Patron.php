@@ -77,6 +77,12 @@
 
             return $found_patron;
         }
+
+        function checkoutCopy($copy)
+        {
+            $date = date('Y-m-d h:i:s');
+            $GLOBALS['DB']->exec("INSERT INTO patrons_copies (copy_id, patron_id, checkout_date) VALUES ({$copy->getId()}, {$this->getId()},'{$date}');");
+        }
     }
 
 ?>
