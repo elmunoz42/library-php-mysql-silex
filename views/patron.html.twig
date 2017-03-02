@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+{% if books is not empty %}
+    <p>Books Currently Enriching Your Life</p>
+    <table>
+    <style>
+        table, th, td {
+        border: 1px solid black;
+        }
+    </style>
+        <colgroup>
+            <col span="3" style="background-color:white">
+            <col style="background-color:grey">
+        </colgroup>
+
+        <tr>
+            <th>Book Name:</th>
+            <th> Authors:</th>
+            <th>Date Checked Out:</th>
+            <th>Return:</th>
+        </tr>
+        {% for book in books %}
+            <tr>
+                <th><a href="/book/{{ book.getId }}">"{{ book.getTitle }}"</a></th>
+                <th>    By:
+                    {% for author in book.findAuthors %}
+                        {{ author.getName }}
+                    {% endfor %}
+                </th>
+                <th>
+                    tbd
+                </th>
+                <th>
+                    tbd
+                </th>
+            </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+{% endblock %}

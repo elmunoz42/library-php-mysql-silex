@@ -7,8 +7,10 @@
     <body>
         <div class='container'>
             <h1>The Library</h1>
+            {% block patron_page %}{% endblock %}
             {% block content %}{% endblock %}
             <h3><a href="/main">Home</a></h3>
+            <h3><a href="/">Logout</a>
         </div>
     </body>
 </html>

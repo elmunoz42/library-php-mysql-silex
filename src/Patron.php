@@ -83,6 +83,26 @@
             $date = date('Y-m-d h:i:s');
             $GLOBALS['DB']->exec("INSERT INTO patrons_copies (copy_id, patron_id, checkout_date) VALUES ({$copy->getId()}, {$this->getId()},'{$date}');");
         }
+
+        function booksEnrichingYourLife()
+        {
+            $books_enriching_your_life = $GLOBALS['DB']->query("SELECT books.* FROM
+            patrons JOIN patrons_copies ON (patrons.id = patrons_copies.patron_id)
+                    JOIN copies ON (patrons_copies.copy_id = copies.id)
+                    JOIN books ON (copies.book_id = books.id )
+                    WHERE patrons.id = {$this->getId()};");
+
+            $books=array();
+            foreach($books_enriching_your_life as $book)
+            {
+                $book_title = $book['title'];
+                $book_id = $book['id'];
+                $new_book = new Book($book_title, $book_id);
+                array_push($books, $new_book);
+            }
+            return $books;
+        }
+
     }
 
 ?>

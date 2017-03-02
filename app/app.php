@@ -32,7 +32,8 @@
     Request::enableHttpMethodParameterOverride();
 
     $app->get('/', function() use($app) {
-
+        $_SESSION['user'] = null;
+        $_SESSION['current_patron'] = null;
         return $app['twig']->render('index.html.twig');
     });
 
@@ -40,9 +41,14 @@
         if ($_GET)
         {
             $_SESSION['user'] = $_GET['user'];
+            if ($_SESSION['user'] == 'patron')
+            {
+                $new_patron = new Patron($_GET['user_name']);
+                $new_patron->save();
+                $_SESSION['current_patron'] = $new_patron;
+            }
         }
-
-        return $app['twig']->render('main.html.twig', array('books' => Book::getAll(), 'user' => $_SESSION['user']));
+        return $app['twig']->render('main.html.twig', array('books' => Book::getAll(), 'user' => $_SESSION['user'], 'patron' => $_SESSION['current_patron']));
     });
 
     $app->post('/add-book', function() use($app) {
@@ -72,7 +78,7 @@
 
         $book = Book::find($id);
         $copies_available = $book->findAvailableCopies();
-        $patron = new Patron("Steve");
+        $patron = $_SESSION['current_patron'];
         $patron->save();
         $patron->checkoutCopy($copies_available[0]);
         $copies_available[0]->update(0);
@@ -81,6 +87,16 @@
 
     });
 
+    $app->get('/patron/{id}', function($id) use ($app) {
+
+        $patron = $_SESSION['current_patron'];
+        $checked_books = $patron->booksEnrichingYourLife();
+
+        return $app['twig']->render('patron.html.twig', array('books'=>$checked_books) );
+
+    });
+
 
     return $app;
+
 ?>

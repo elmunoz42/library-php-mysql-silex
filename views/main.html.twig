@@ -1,6 +1,10 @@
 {% extends 'base.html.twig' %}
 
-
+{% block patron_page %}
+    {% if user == 'patron' %}
+        <a href="/patron/{{ patron.getId }}">Your books</a>
+    {% endif %}
+{% endblock %}
 {% block content %}
     {% if user == 'librarian' %}
         <h3>Librarian Main Page</h3>

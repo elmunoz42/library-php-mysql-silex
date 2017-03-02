@@ -2,12 +2,17 @@
 
 {% block content %}
     <h3>Welcome to the library!</h3>
-    <p>Are you a patron or a librarian?</p>
+    <p>Login</p>
     <form action='/main'>
+        <p>Type:</p>
         <select name='user'>
             <option value='patron'>Patron</option>
             <option value='librarian'>Librarian</option>
         </select>
+
+        <label for='user_name'>Name: </label>
+        <input type='text' name='user_name' required>
+
         <button type='submit'>Login</button>
     </form>
 {% endblock %}
