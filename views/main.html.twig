@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-    <!-- {% if user == 'librarian' %} -->
+    {% if user == 'librarian' %}
         <h3>Librarian Main Page</h3>
         <h4>Add a book to the library</h4>
         <form action='/add-book' method='post'>
@@ -17,13 +17,13 @@
             <button type='submit'>Add book</button>
 
         </form>
-    <!-- {% endif %} -->
+    {% endif %}
 
     {% if books is not empty %}
     <p>Books in the library</p>
     <ul>
         {% for book in books %}
-            <li>"{{ book.getTitle }}" By: {% for author in book.findAuthors %}{{ author.getName }} {% endfor %} Total Copies:  {{ book.findCopies|length }}</li>
+            <li><a href="/book/{{ book.getId }}">"{{ book.getTitle }}"</a> By: {% for author in book.findAuthors %}{{ author.getName }} {% endfor %} Total Copies:  {{ book.findCopies|length }}</li>
         {% endfor %}
     </ul>
     {% endif %}

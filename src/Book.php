@@ -63,6 +63,21 @@
             return $found_copy;
         }
 
+        function findAvailableCopies()
+        {
+            $copies = Copies::getAll();
+            $available_copies = [];
+
+            foreach($copies as $copy)
+            {
+                if ($this->getId() == $copy->getBookId() && $copy->getAvailable())
+                {
+                    array_push($available_copies, $copy);
+                }
+            }
+            return $available_copies;
+        }
+
         function findAuthors()
         {
             $found_authors = $GLOBALS['DB']->query("SELECT authors.* FROM books JOIN authors_books ON (authors_books.book_id = books.id) JOIN authors ON (authors_books.author_id = authors.id) WHERE books.id = {$this->getId()};");

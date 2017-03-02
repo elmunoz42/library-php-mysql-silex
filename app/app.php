@@ -56,6 +56,14 @@
 
         return $app->redirect('/main');
     });
+    // View book
+    $app->get('/book/{id}', function($id) use($app) {
+
+        $book = Book::find($id);
+        $copies_available = $book->findAvailableCopies();
+
+        return $app['twig']->render('book.html.twig', array('book' => $book, 'copies_available' => $copies_available));
+    });
 
     return $app;
 ?>

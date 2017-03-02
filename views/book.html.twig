@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+
+    <h3>"{{ book.getTitle }}"</h3>
+
+    <h4>Author:
+        {% for author in book.findAuthors %}
+            {{ author.getName }}
+        {% endfor %}</h4>
+    <h4>Available copies: {{ copies_available|length }}</h4>
+
+{% endblock %}
