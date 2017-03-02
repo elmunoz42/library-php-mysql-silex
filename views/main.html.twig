@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <h3>Librarian Main Page</h3>
+    <form action='/add-book' method='post'>
+        <label for='title'>Add a book to the library: </label>
+        <input type='text' name='title' required>
+
+        <label for='author'>Author: </label>
+        <input type='text' name='author' required>
+
+        <button type='submit'>Add book</button>
+
+    </form>
+
+{% endblock %}
