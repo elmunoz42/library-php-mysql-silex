@@ -116,6 +116,18 @@
             return $matching_id;
 
         }
+        function checkedOutCopyAvailable($book)
+        {
+            $copies = $GLOBALS['DB']->query("SELECT copies.* FROM
+            patrons JOIN patrons_copies ON (patrons.id = patrons_copies.patron_id)
+                    JOIN copies ON (patrons_copies.copy_id = copies.id)
+                    WHERE copies.book_id = {$book->getId()};");
+            $matching_available = null;
+            foreach($copies as $copy){
+                $matchin_name = $copy['available'];
+            }
+            return $matching_available;
+        }
 
     }
 

@@ -35,12 +35,18 @@
                     tbd
                 </th>
                 <th>
+                    {% if patron.checkedOutCopyAvailable(book) %}
+                        <p>
+                            Book returned.
+                        </p>
+                    {% endif %}
                     <form action='/patron/{{ patron.getId }}' method='post'>
                         <input name='_method' type='hidden' value='patch'>
 
                         <input type='hidden' name='book_id' value='{{ book.getId }}'>
                         <button type='submit'>Return Book</button>
                     </form>
+
                 </th>
             </tr>
         {% endfor %}

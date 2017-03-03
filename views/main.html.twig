@@ -25,23 +25,6 @@
     {% endif %}
 
     {% if books is not empty %}
-    <p>Books in the library</p>
-    <ul>
-        {% for book in books %}
-            <li><a href="/book/{{ book.getId }}">"{{ book.getTitle }}"</a> By:
-            {% for author in book.findAuthors %}
-                {{ author.getName }}
-            {% endfor %}
-            Total Copies:  {{ book.findCopies|length }}
-            {% if book.findAvailableCopies is not empty %}
-                Available Copies: {{ book.findAvailableCopies|length }}
-            {% else %}
-                <em>All copies are checked out at the moment!</em></li>
-            {% endif %}
-        {% endfor %}
-
-    {% endif %}
-    {% if books is not empty %}
         <p>Books in the library</p>
         <table>
         <style>

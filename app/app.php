@@ -74,6 +74,7 @@
         return $app['twig']->render('book.html.twig', array('book' => $book, 'copies_available' => $copies_available));
     });
 
+    // check book out
     $app->patch('/book/{id}', function($id) use ($app) {
 
         $book = Book::find($id);
@@ -86,6 +87,7 @@
 
     });
 
+    // view books checked out current and history
     $app->get('/patron/{id}', function($id) use ($app) {
 
         $patron = $_SESSION['current_patron'];
@@ -95,12 +97,17 @@
 
     });
 
-    // $app->patch('/patron/{id}', function($id) use ($app) {
-    //     $copies = Book::findCopies($_POST['book_id']);
-    //
-    //
-    //     return $app->redirect('/patron/{id}'});
-    // });
+    // return book
+    $app->patch('/patron/{id}', function($id) use ($app) {
+        // $copies = Book::findCopies($_POST['book_id']);
+        $book = Book::find($_POST['book_id']);
+        $patron = $_SESSION['current_patron'];
+        $copy_id = $patron->checkedOutCopy($book);
+        $copy = Copies::find($copy_id);
+        $copy->update(1);
+
+        return $app->redirect('/patron/{id}');
+    });
 
 
     return $app;
