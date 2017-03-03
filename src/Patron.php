@@ -103,6 +103,20 @@
             return $books;
         }
 
+        function checkedOutCopy($book)
+        {
+            $copies = $GLOBALS['DB']->query("SELECT copies.* FROM
+            patrons JOIN patrons_copies ON (patrons.id = patrons_copies.patron_id)
+                    JOIN copies ON (patrons_copies.copy_id = copies.id)
+                    WHERE copies.book_id = {$book->getId()};");
+            $matching_id = null;
+            foreach($copies as $copy){
+                $matching_id = $copy['id'];
+            }
+            return $matching_id;
+
+        }
+
     }
 
 ?>

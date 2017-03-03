@@ -41,7 +41,7 @@
         if ($_GET)
         {
             $_SESSION['user'] = $_GET['user'];
-            if ($_SESSION['user'] == 'patron')
+            if ($_SESSION['user'] == 'patron' && empty($_SESSION['current_patron']))
             {
                 $new_patron = new Patron($_GET['user_name']);
                 $new_patron->save();
@@ -79,7 +79,6 @@
         $book = Book::find($id);
         $copies_available = $book->findAvailableCopies();
         $patron = $_SESSION['current_patron'];
-        $patron->save();
         $patron->checkoutCopy($copies_available[0]);
         $copies_available[0]->update(0);
 
@@ -92,9 +91,16 @@
         $patron = $_SESSION['current_patron'];
         $checked_books = $patron->booksEnrichingYourLife();
 
-        return $app['twig']->render('patron.html.twig', array('books'=>$checked_books) );
+        return $app['twig']->render('patron.html.twig', array('books'=>$checked_books, 'patron' => $_SESSION['current_patron']) );
 
     });
+
+    // $app->patch('/patron/{id}', function($id) use ($app) {
+    //     $copies = Book::findCopies($_POST['book_id']);
+    //
+    //
+    //     return $app->redirect('/patron/{id}'});
+    // });
 
 
     return $app;
